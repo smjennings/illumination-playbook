@@ -41,3 +41,7 @@ See "Known tool quirks" in `PLAYBOOK.md`. In short: the Tenable One `filters` ar
 ## Data handling
 
 Never commit `runs/`. Briefs and raw pulls contain hostnames, IPs, account names and exposure details.
+
+## License
+
+[MIT](LICENSE)
