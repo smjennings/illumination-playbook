@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illumination Exposure Brief</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column with full-width threat-collision table; findings as ranked dossiers with an evidence strip */
+:root{
+  --bg:#F2F4F7; --panel:#FFFFFF; --ink:#13202E; --muted:#5B6878; --rule:#D8DEE6;
+  --accent:#1E5AA8; --accent-soft:#E3ECF8;
+  --crit:#B42318; --crit-soft:#FDECEA; --high:#B54708; --high-soft:#FEF1E3; --ok:#2E7D4F;
+  --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1620; --panel:#16202C; --ink:#E6ECF3; --muted:#9AA8B8; --rule:#2A3746;
+  --accent:#7FB0F0; --accent-soft:#1C2C42; --crit:#F2877C; --crit-soft:#3A1E1D; --high:#F4B266; --high-soft:#3A2A17; --ok:#7CCB9A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1620; --panel:#16202C; --ink:#E6ECF3; --muted:#9AA8B8; --rule:#2A3746;
+  --accent:#7FB0F0; --accent-soft:#1C2C42; --crit:#F2877C; --crit-soft:#3A1E1D; --high:#F4B266; --high-soft:#3A2A17; --ok:#7CCB9A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:40px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:700;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+h3{font-size:17px;font-weight:700}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--mono);font-size:13px}
+header{display:grid;gap:14px}
+.lede{font-size:17px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:4px}
+.stat b{font:700 26px/1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+section{display:grid;gap:18px}
+.tablebox{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:500 12px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;font:500 11px/1 var(--mono);padding:4px 7px;border-radius:999px;white-space:nowrap}
+.kev{background:var(--crit-soft);color:var(--crit)}
+.poc{background:var(--high-soft);color:var(--high)}
+.info{background:var(--accent-soft);color:var(--accent)}
+.findings{display:grid;gap:16px}
+.finding{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--rule);border-radius:6px;padding:18px 20px;display:grid;gap:10px;min-width:0}
+.finding.c{border-left-color:var(--crit)} .finding.h{border-left-color:var(--high)} .finding.i{border-left-color:var(--accent)}
+.fhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.rank{font:700 13px var(--mono);color:var(--muted)}
+.evidence{font:13px/1.55 var(--mono);color:var(--muted);background:var(--bg);border-radius:4px;padding:10px 12px;overflow-x:auto}
+.evidence b{color:var(--ink);font-weight:500}
+.why{font-size:14px}
+.why strong{color:var(--ink)}
+.bars{display:grid;gap:10px;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:16px 18px}
+.bar{display:grid;grid-template-columns:150px 1fr 60px;gap:12px;align-items:center;font-size:13px}
+.track{height:14px;background:var(--bg);border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px}
+.bar .v{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:520px){.bar{grid-template-columns:1fr 52px}.bar .lbl{grid-column:1/-1}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+ol.actions{margin:0;padding-left:22px;display:grid;gap:10px;max-width:72ch}
+ol.actions li::marker{font-family:var(--mono);color:var(--muted)}
+.agents{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.agent{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.agent ul{margin:0;padding-left:18px;font-size:13.5px;display:grid;gap:4px}
+.note{font-size:13.5px;color:var(--muted);display:grid;gap:8px}
+.note ul{margin:0;padding-left:18px;display:grid;gap:4px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sources{columns:2 300px;font-size:13px;margin:0;padding-left:18px}
+.sources li{break-inside:avoid;margin-bottom:4px}
+</style>
+</head>
+<body>
+<!--
+  Illumination house template. The briefer agent keeps the CSS tokens, structure and tone and
+  replaces every placeholder ({{...}}, host-NN, acct-NN) with run data. One example of each
+  component is shown; repeat it as needed.
+-->
+<div class="wrap">
+<header>
+  <div class="eyebrow">Exposure intelligence brief · {{DATE}} · Tenable VM + Tenable One</div>
+  <h1>Where this week's exploited vulnerabilities meet your environment</h1>
+  <p class="lede">I checked the CVEs getting the most exploitation and attention right now against every Tenable asset, finding and identity I could reach. Here is where they overlap, plus patterns that only show up when the data sets are joined.</p>
+  <div class="stats">
+    <div class="stat"><b>{{N}}</b><span>VM host assets</span></div>
+    <div class="stat"><b>{{N}}</b><span>Tenable One assets</span></div>
+    <div class="stat"><b>{{N}}</b><span>findings records analyzed</span></div>
+    <div class="stat"><b>{{N}}</b><span>watchlist threats checked</span></div>
+    <div class="stat"><b>{{N}}</b><span>threats present here</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Collision map: trending threats in your estate</h2>
+  <p>Threats getting heavy attention this month (CISA KEV additions, Tenable VI trending categories, vendor alerts), matched against active or resurfaced findings and installed software.</p>
+  <div class="tablebox"><table>
+    <thead><tr><th>Threat</th><th>Status in the wild</th><th>Here</th><th>Affected hosts</th></tr></thead>
+    <tbody>
+      <tr><td><b>{{Threat nickname}}</b><br><span class="mono">CVE-YYYY-NNNNN</span></td><td><span class="pill kev">KEV · due {{date}}</span> {{one-line context}}</td><td class="n">3 hosts</td><td>host-01, host-02 <b>resurfaced</b>, host-03</td></tr>
+      <tr><td><b>{{Threat nickname}}</b><br><span class="mono">CVE-YYYY-NNNNN</span></td><td><span class="pill poc">PoC</span> {{one-line context}}</td><td class="n">1 host</td><td>host-04</td></tr>
+      <tr><td><b>Notable, no confirmed host</b>: {{threat list}}</td><td><span class="pill info">not KEV</span></td><td class="n">0</td><td>{{present-but-unassessed notes}}</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Patterns you won't see in a single dashboard</h2>
+  <p>Ranked by how directly each one leads to compromise. Every claim cites the record counts it rests on.</p>
+  <div class="findings">
+
+    <article class="finding c">
+      <div class="fhead"><span class="rank">01</span><h3>{{One-line claim, critical}}</h3></div>
+      <p class="why">{{2–4 sentences: what is true, why it matters.}} <strong>Why it's hard to spot:</strong> {{what single-tool view hides it}}.</p>
+      <div class="evidence"><b>{{finding name}}</b> ACTIVE on host-01 · <b>{{finding name}}</b> RESURFACED ×3 · {{record counts}}</div>
+    </article>
+
+    <article class="finding h">
+      <div class="fhead"><span class="rank">02</span><h3>{{One-line claim, high}}</h3></div>
+      <p class="why">{{narrative}}</p>
+      <div class="evidence">{{evidence}}</div>
+    </article>
+
+    <article class="finding i">
+      <div class="fhead"><span class="rank">03</span><h3>{{One-line claim, info / visibility}}</h3></div>
+      <p class="why">{{narrative}}</p>
+    </article>
+
+    <article class="bars" aria-label="Resurfacing rate comparison">
+      <div class="eyebrow">Share of open findings that are RESURFACED</div>
+      <div class="bar"><span class="lbl">Identity (n={{N}} open)</span><div class="track"><div class="fill" style="width:20%;background:var(--crit)"></div></div><span class="v">{{x}}%</span></div>
+      <div class="bar"><span class="lbl">Software (n={{N}} open)</span><div class="track"><div class="fill" style="width:7%;background:var(--accent)"></div></div><span class="v">{{x}}%</span></div>
+      <div class="eyebrow" style="margin-top:8px">Share of all crit+high findings held by the top hosts</div>
+      <div class="bar"><span class="lbl">Top 10% ({{N}} hosts)</span><div class="track"><div class="fill" style="width:90%;background:var(--high)"></div></div><span class="v">{{x}}%</span></div>
+    </article>
+  </div>
+</section>
+
+<section class="two">
+  <div style="display:grid;gap:14px;min-width:0">
+    <h2>Next 72 hours</h2>
+    <ol class="actions">
+      <li>{{Action for the nearest KEV due date}} on <b>host-01</b>.</li>
+      <li>{{Action for a multi-threat host or regression}}.</li>
+    </ol>
+  </div>
+  <div style="display:grid;gap:14px;min-width:0">
+    <h2>Structural fixes</h2>
+    <ol class="actions">
+      <li>{{Process-level fix, with the KPI to track}}.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="note">
+  <h2>Method and limits</h2>
+  <ul>
+    <li>{{Data pull time and any collector failures or caps from collector_manifest.json}}</li>
+    <li>Tenable One rejects the <span class="mono">filters</span> argument through this MCP client, so threats are matched by product name, not CVE ID. A plugin whose name lacks the product name can be missed.</li>
+    <li>{{Sample sizes behind any percentage}}</li>
+  </ul>
+  <h3 style="margin-top:8px">Sources</h3>
+  <ol class="sources">
+    <li><a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA Known Exploited Vulnerabilities catalog</a></li>
+    <li>{{Every watchlist URL a claim relies on}}</li>
+  </ol>
+</section>
+</div>
+</body>
+</html>
